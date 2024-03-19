@@ -19,7 +19,8 @@ env:
  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
  # S3 bucket for the Terraform state
- BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE}}
+ BUCKET_TF_STATE: ${{ var.BUCKET_TF_STATE}}
+ DYNAMODB_TABLE: ${{ DYNAMODB_TABLE }}
  
 jobs:
  terraform:
@@ -43,7 +44,7 @@ jobs:
     
      - name: Terraform init
        id: init
-       run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}"
+       run: terraform init -backend-config="bucket=$BUCKET_TF_STATE" -backend-config="dynamodb_table=$DYNAMODB_TABLE"
  
      - name: Terraform format
        id: fmt
@@ -57,7 +58,7 @@ jobs:
        id: plan
        if: github.event_name == 'pull_request'
        run: |
-        terraform workspace select ${{ secrets.WORKSPACE }} || terraform workspace new ${{ secrets.WORKSPACE }}
+        terraform workspace select ${{ var.WORKSPACE }} || terraform workspace new ${{ var.WORKSPACE }}
         terraform plan -no-color -input=false
        continue-on-error: true
     
@@ -95,5 +96,5 @@ jobs:
      - name: Terraform Apply
        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
        run: |
-        terraform workspace select ${{ secrets.WORKSPACE }} || terraform workspace new ${{ secrets.WORKSPACE }}
+        terraform workspace select ${{ var.WORKSPACE }} || terraform workspace new ${{ var.WORKSPACE }}
         terraform apply -auto-approve -input=false
