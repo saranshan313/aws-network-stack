@@ -20,7 +20,7 @@ env:
  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
  # S3 bucket for the Terraform state
  BUCKET_TF_STATE: ${{ var.BUCKET_TF_STATE}}
- DYNAMODB_TABLE: ${{ DYNAMODB_TABLE }}
+ DYNAMODB_TABLE: ${{ var.DYNAMODB_TABLE }}
  
 jobs:
  terraform:
