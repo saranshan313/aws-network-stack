@@ -21,7 +21,7 @@ env:
  
 jobs:
  terraform:
-   name: Terraform Infrastructure Change Management - $ENVIRONMENT
+   name: 'Terraform Infrastructure Change Management - $ENVIRONMENT'
    runs-on: ubuntu-latest
    environment: $ENVIRONMENT
    defaults:
@@ -31,10 +31,10 @@ jobs:
        working-directory: ./terraform
  
    steps:
-     - name: Checkout the repository to the runner - $ENVIRONMENT
+     - name: 'Checkout the repository to the runner - $ENVIRONMENT'
        uses: actions/checkout@v2
 
-     - name: AWS Login and Terraform init - $ENVIRONMENT
+     - name: 'AWS Login and Terraform init - $ENVIRONMENT'
        uses: ./.github/actions/terraform-init
        with:
          aws_access_key: $AWS_ACCESS_KEY_ID
@@ -44,10 +44,11 @@ jobs:
          aws_backend_bucket_key: $ENVIRONMENT
          aws_backend_dynanmodb: $DYNAMODB_TABLE
  
-     - name: Check and Validate - $ENVIRONMENT
+     - name: 'Check and Validate - $ENVIRONMENT'
        uses: ./.github/actions/terraform-test
   
-     - name: Deploy to $ENVIRONMENT
+     - name: 'Deploy to $ENVIRONMENT'
        uses: ./.github/actions/terraform-apply
        with:
           terraform_workspace: $WORKSPACE
+          
