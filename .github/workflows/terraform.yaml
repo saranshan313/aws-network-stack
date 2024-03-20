@@ -1,0 +1,53 @@
+name: Terraform Infrastructure Change Management Pipeline with GitHub Actions
+ 
+on: 
+  workflow_dispatch:
+  push:
+    paths:
+      - terraform/**
+ 
+env:
+  # verbosity setting for Terraform logs
+  TF_LOG: INFO
+  # Credentials for deployment to AWS
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  # S3 bucket for the Terraform state
+  BUCKET_TF_STATE: ${{ vars.BUCKET_TF_STATE}}
+  DYNAMODB_TABLE: ${{ vars.DYNAMODB_TABLE }}
+  WORKSPACE: ${{ vars.WORKSPACE }}
+  REGION: ${{ vars.REGION }}
+  ENVIRONMENT: ${{ vars.ENVIRONMENT }}
+ 
+jobs:
+ terraform:
+   name: Terraform Infrastructure Change Management - $ENVIRONMENT
+   runs-on: ubuntu-latest
+   environment: $ENVIRONMENT
+   defaults:
+     run:
+       shell: bash
+       # We keep Terraform files in the terraform directory.
+       working-directory: ./terraform
+ 
+   steps:
+     - name: Checkout the repository to the runner - $ENVIRONMENT
+       uses: actions/checkout@v2
+
+     - name: AWS Login and Terraform init - $ENVIRONMENT
+       uses: ./.github/actions/terraform-init
+       with:
+         aws_access_key: $AWS_ACCESS_KEY_ID
+         aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+         aws_region: $REGION
+         aws_backend_bucket: $BUCKET_TF_STATE
+         aws_backend_bucket_key: $ENVIRONMENT
+         aws_backend_dynanmodb: $DYNAMODB_TABLE
+ 
+     - name: Check and Validate - $ENVIRONMENT
+       uses: ./.github/actions/terraform-test
+  
+     - name: Deploy to $ENVIRONMENT
+       uses: ./.github/actions/terraform-apply
+       with:
+          terraform_workspace: $WORKSPACE
