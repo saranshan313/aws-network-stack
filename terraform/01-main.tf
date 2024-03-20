@@ -15,4 +15,4 @@ provider "aws" {
   region = local.regions[local.settings.region]
 }
 
-data "aws_caller_identity" "current" {}
+#data "aws_caller_identity" "current" {}
