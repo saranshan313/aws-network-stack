@@ -21,7 +21,7 @@ on:
  
 jobs:
  infra-staging-use1:
-   if: github.ref == 'refs/heads/feature/staging' && github.event_name == 'push'
+   if: github.ref == 'refs/heads/feature/staging'
    name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
    runs-on: ubuntu-latest
    environment: infra-staging-use1
@@ -54,7 +54,7 @@ jobs:
           terraform_workspace: ${{ vars.WORKSPACE }}
 
  infra-prod-use1:
-   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+   if: github.ref == 'refs/heads/main'
    name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
    runs-on: ubuntu-latest
    environment: infra-prod-use1
