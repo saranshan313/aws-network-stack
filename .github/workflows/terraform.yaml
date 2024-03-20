@@ -23,7 +23,7 @@ jobs:
  terraform:
    name: 'Terraform Infrastructure Change Management - $ENVIRONMENT'
    runs-on: ubuntu-latest
-   environment: $ENVIRONMENT
+   environment: infra-staging-use1
    defaults:
      run:
        shell: bash
@@ -51,4 +51,3 @@ jobs:
        uses: ./.github/actions/terraform-apply
        with:
           terraform_workspace: $WORKSPACE
-          
