@@ -6,5 +6,10 @@ terraform {
     }
   }
   backend "s3" {
+    # bucket         = "tf-remote-state-234-343-555"
+    # key            = "infra-staging-use1/terraform.tfstate"
+    # region         = "us-east-1"
+    # dynamodb_table = "terraform-remote-state-dynamo"
+    # encrypt        = true
   }
 }
