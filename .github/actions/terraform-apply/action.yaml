@@ -28,14 +28,6 @@ runs:
       shell: bash
       working-directory: terraform
 
-    - name: Wait for Manual Approval
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      uses: trstringer/manual-approval@v1
-      with:
-        approvers: saranshan313
-        minimum-approvals: 1
-        exclude-workflow-initiator-as-approver: false
-
     - name: Terraform apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: |
