@@ -1,4 +1,4 @@
-name: Infra Deployment via Terraform
+name: Terraform Deployment - Network
  
 on: 
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
 jobs:
  infra-staging-use1:
    if: github.ref == 'refs/heads/feature/staging' || github.event_name == 'pull_request'
-   name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
+   #name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
    runs-on: ubuntu-latest
    environment: infra-staging-use1
    defaults:
@@ -42,10 +42,9 @@ jobs:
 
  infra-prod-use1:
    if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
-   name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
+   #name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
    runs-on: ubuntu-latest
    environment: infra-prod-use1
-   needs: [infra-staging-use1]
    defaults:
      run:
        shell: bash
