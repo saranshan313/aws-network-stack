@@ -10,14 +10,14 @@ on:
       - terraform/**
   pull_request:
    branches:
-   - main
-   - feature/staging
+   # - main
+    - feature/staging
    paths:
-   - terraform/**    
+    - terraform/**    
  
 jobs:
  infra-staging-use1:
-   if: github.ref == 'refs/heads/feature/staging' #|| github.event_name == 'pull_request'
+   if: github.ref == 'refs/heads/feature/staging' || github.event_name == 'pull_request'
    #name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
    runs-on: ubuntu-latest
    environment: infra-staging-use1
@@ -50,7 +50,7 @@ jobs:
           terraform_workspace: ${{ vars.WORKSPACE }}
 
  infra-prod-use1:
-   if: github.ref == 'refs/heads/main' #|| github.event_name == 'pull_request'
+   if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
    #name: 'Terraform Infrastructure Change Management - ${{ vars.ENVIRONMENT }}'
    runs-on: ubuntu-latest
    environment: infra-prod-use1
