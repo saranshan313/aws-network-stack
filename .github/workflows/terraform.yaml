@@ -10,7 +10,7 @@ on:
       - terraform/**
   pull_request:
    branches:
-    - main
+   # - main
     - feature/staging
    paths:
     - terraform/**    
